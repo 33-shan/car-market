@@ -1,6 +1,6 @@
-"use client";
+'use client';
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Link from 'next/link';
 import { Cactus_Classical_Serif } from 'next/font/google'
 import { useSearchParams } from 'next/navigation';
@@ -29,6 +29,7 @@ export default function Home() {
     setCars(storedCars);
   }, [isNew]);
   return (
+   <Suspense fallback={<div>載入中...</div>}>
     <div className="flex flex-col items-center justify-center mb-6">
       <Image
         src="/logo.png"
@@ -68,5 +69,6 @@ export default function Home() {
         )}
       </main>
     </div>
+  </Suspense>
   );
 }
