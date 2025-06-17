@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from "next/image";
 
 export default function PostCarPage() {
   const router = useRouter();
@@ -110,7 +111,7 @@ export default function PostCarPage() {
         {/* 預覽圖片 */}
         <div className="grid grid-cols-2 gap-2 mt-2">
           {car.imageBase64List.map((img, i) => (
-            <img
+            <Image
               key={i}
               src={img}
               alt={`預覽圖${i}`}
