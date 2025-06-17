@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import Image from "next/image"; 
 
 export default function CarDetailPage() {
   const { id } = useParams(); // 拿到網址中的 id
