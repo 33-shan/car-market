@@ -1,19 +1,21 @@
 'use client';
-
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 export default function HomeContent() {
   const [cars, setCars] = useState([]);
-  const searchParams = useSearchParams();
-  const isNew = searchParams.get("new");
+  const [isNew, setIsNew] = useState(false);
 
   useEffect(() => {
+    // 安全讀取 URL query（例如 ?new=1）
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('new')) setIsNew(true);
+    }
+
     const storedCars = JSON.parse(localStorage.getItem("cars") || "[]");
     setCars(storedCars);
-  }, [isNew]);
+  }, []);
 
   return (
     <>
@@ -22,16 +24,10 @@ export default function HomeContent() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {cars.map((car, i) => (
-            <Link
-              key={i}
-              href={`/car/${car.id}`}
-              className="block bg-white p-6 rounded w-[380px] shadow-md hover:shadow-lg transition"
-            >
-              <Image
+            <Link key={i} href={`/car/${car.id}`} className="block bg-white p-6 rounded w-[380px] shadow-md hover:shadow-lg transition">
+              <img
                 src={car.imageBase64List?.[0] || "/no-image.png"}
                 alt="車輛圖片"
-                width={380}
-                height={256}
                 className="w-full h-64 object-cover rounded-md"
               />
               <p className="font-semibold">{car.brand} {car.model}（{car.year} 年）</p>
