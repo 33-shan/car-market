@@ -1,0 +1,10 @@
+# 忽略 Node 模組
+node_modules/
+
+# 忽略 Vercel 等系統檔案
+.vercel/
+
+# 忽略暫存、快取、作業系統資料
+.DS_Store
+*.log
+Thumbs.db
