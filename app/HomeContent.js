@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function HomeContent() {
   const [cars, setCars] = useState([]);
@@ -39,7 +39,8 @@ export default function HomeContent() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {cars.map((car, i) => (
               <Link key={i} href={`/car/${car.id}`} className="block bg-white p-6 rounded w-[380px] shadow-md hover:shadow-lg transition">
-                <img src={car.imageBase64List?.[0] || "/no-image.png"}
+                <img
+                  src={car.imageBase64List?.[0] || "/no-image.png"}
                   alt="車輛圖片"
                   className="w-full h-64 object-cover rounded-md"
                 />
