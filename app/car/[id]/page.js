@@ -18,8 +18,8 @@ export default function CarDetailPage() {
     <div className="max-w-xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">{car.brand} {car.model}（{car.year} 年）</h1>
       <div className="grid grid-cols-2 gap-2 mb-4">
-        {car.imageBase64List?.map((img, i) => (
-          <img key={i} src={img} alt={`車圖${i}`} className="w-full h-48 object-cover rounded" />
+        {car.imageBase64List?.map((Image, i) => (
+          <Image key={i} src={Image} alt={`車圖${i}`} className="w-full h-48 object-cover rounded" />
         ))}
       </div>
       <p><strong>價格：</strong>{car.price} 萬</p>

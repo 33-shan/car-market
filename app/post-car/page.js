@@ -110,10 +110,10 @@ export default function PostCarPage() {
 
         {/* 預覽圖片 */}
         <div className="grid grid-cols-2 gap-2 mt-2">
-          {car.imageBase64List.map((img, i) => (
+          {car.imageBase64List.map((Image, i) => (
             <Image
               key={i}
-              src={img}
+              src={Image}
               alt={`預覽圖${i}`}
               className="h-32 object-cover rounded"
             />
