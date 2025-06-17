@@ -1,3 +1,4 @@
+// 強制重新部署觸發
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
