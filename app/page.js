@@ -25,7 +25,6 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center mb-6">
       <Image
-        className="dark:invert"
         src="/logo.png"
         alt="Next.js logo"
         width={400}
