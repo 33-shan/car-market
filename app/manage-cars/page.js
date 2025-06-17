@@ -1,6 +1,7 @@
-"use client";
+'use client';
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from 'next/image'
 
 export default function ManageCarsPage() {
     const [cars, setCars] = useState([]);
@@ -49,7 +50,7 @@ export default function ManageCarsPage() {
                         {cars.map((car, index) => (
                             <div key={index} className="bg-white text-black rounded-lg p-4 shadow">
                                 {car.imageBase64List?.[0] && (
-                                    <img
+                                    <Image
                                         src={car.imageBase64List[0]}
                                         alt="車輛圖片"
                                         className="w-full h-48 object-contain mb-2 border"
