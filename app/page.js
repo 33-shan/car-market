@@ -1,10 +1,11 @@
 'use client';
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Cactus_Classical_Serif } from "next/font/google";
 import { useSearchParams } from "next/navigation";
 import HomeContent from './HomeContent';
+import { Suspense } from 'react';
 
 const cactus = Cactus_Classical_Serif({
   subsets: ['latin'],
@@ -31,7 +32,7 @@ export default function Home() {
   }, [isNew]);
   return (
    <Suspense fallback={<div>載入中...</div>}>
-    <HomeContent />
+      <HomeContent />
     <div className="flex flex-col items-center justify-center mb-6">
       <Image
         src="/logo.png"
