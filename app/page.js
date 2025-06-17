@@ -1,10 +1,9 @@
 'use client';
+import { useEffect, useState, Suspense } from "react";
 import Image from "next/image";
-import { useEffect, useState} from "react";
-import Link from 'next/link';
-import { Cactus_Classical_Serif } from 'next/font/google'
-import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import Link from "next/link";
+import { Cactus_Classical_Serif } from "next/font/google";
+import { useSearchParams } from "next/navigation";
 import HomeContent from './HomeContent';
 
 const cactus = Cactus_Classical_Serif({
@@ -49,7 +48,7 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {cars.map((car, i) => (
               <Link key={i} href={`/car/${car.id}`} className="block bg-white p-6 rounded w-[380px] shadow-md hover:shadow-lg transition">
-                <Image src={car.imageBase64List?.[0] || "/no-image.png"}
+                <img src={car.imageBase64List?.[0] || "/no-image.png"}
                   alt="車輛圖片"
                   className="w-full h-64 object-cover rounded-md"
                 />
