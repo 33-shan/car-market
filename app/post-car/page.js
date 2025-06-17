@@ -39,7 +39,7 @@ export default function PostCarPage() {
     const existingCars = JSON.parse(localStorage.getItem('cars') || '[]');
     localStorage.setItem('cars', JSON.stringify([...existingCars, car]));
 
-    router.push('/');
+    router.push('/?new=1');
   };
 
   return (

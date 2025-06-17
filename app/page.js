@@ -1,9 +1,9 @@
-// 強制重新部署觸發
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from 'next/link';
 import { Cactus_Classical_Serif } from 'next/font/google'
+import { useSearchParams } from 'next/navigation';
 
 const cactus = Cactus_Classical_Serif({
   subsets: ['latin'],
@@ -13,16 +13,21 @@ const cactus = Cactus_Classical_Serif({
 export default function Home() {
   const [cars, setCars] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
+  const searchParams = useSearchParams();
+  const isNew = searchParams.get('new');
 
-  useEffect(() => {
+
+ useEffect(() => {
     const token = localStorage.getItem("adminToken");
     if (token === "my-secret-token") {
       setIsAdmin(true);
     }
+  }, []);
 
+  useEffect(() => {
     const storedCars = JSON.parse(localStorage.getItem("cars") || "[]");
     setCars(storedCars);
-  }, []);
+  }, [isNew]);
   return (
     <div className="flex flex-col items-center justify-center mb-6">
       <Image
