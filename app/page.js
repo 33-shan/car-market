@@ -1,29 +1,45 @@
-'use client' // 添加這行，因為使用了瀏覽器專用API
+'use client'
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from 'next/link';
 
+// 定义车辆数据类型
+interface Car {
+  id: string;
+  brand: string;
+  model: string;
+  year: number;
+  price: number;
+  color: string;
+  mileage: number;
+  imageBase64List?: string[];
+}
+
 function ClientOnlyContent() {
-  const [cars, setCars] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isNew, setIsNew] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // 添加加載狀態
+  const [cars, setCars] = useState<Car[]>([]);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [isNew, setIsNew] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // 確保在客戶端執行
+    // 确保在客户端执行
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem("adminToken");
-      if (token === "my-secret-token") {
-        setIsAdmin(true);
+      try {
+        const token = localStorage.getItem("adminToken");
+        setIsAdmin(token === "my-secret-token");
+
+        const searchParams = new URLSearchParams(window.location.search);
+        setIsNew(searchParams.get("new") === "1");
+
+        const carsData = localStorage.getItem("cars");
+        setCars(carsData ? JSON.parse(carsData) : []);
+      } catch (error) {
+        console.error("初始化错误:", error);
+        setCars([]);
+      } finally {
+        setIsLoading(false);
       }
-
-      const search = new URLSearchParams(window.location.search);
-      setIsNew(search.get("new") === "1");
-
-      const storedCars = JSON.parse(localStorage.getItem("cars") || "[]");
-      setCars(storedCars);
-      setIsLoading(false);
     }
   }, []);
 
@@ -33,16 +49,25 @@ function ClientOnlyContent() {
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-8 flex flex-col items-center">
+      {isNew && (
+        <div className="mb-4 p-2 bg-green-100 text-green-800 rounded">
+          新車輛已添加!
+        </div>
+      )}
       <h2 className="text-2xl font-bold mt-8 mb-4">🚗 最新車輛</h2>
       {cars.length === 0 ? (
         <p className="text-gray-400">目前尚無上架車輛</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {cars.map((car, i) => (
-            <Link key={i} href={`/car/${car.id}`} className="block bg-white p-6 rounded w-[380px] shadow-md hover:shadow-lg transition">
+          {cars.map((car) => (
+            <Link 
+              key={car.id} 
+              href={`/car/${car.id}`} 
+              className="block bg-white p-6 rounded w-[380px] shadow-md hover:shadow-lg transition"
+            >
               <Image
                 src={car.imageBase64List?.[0] || "/no-image.png"}
-                alt="車輛圖片"
+                alt={`${car.brand} ${car.model}`}
                 width={380}
                 height={256}
                 className="w-full h-64 object-cover rounded-md"
@@ -56,7 +81,10 @@ function ClientOnlyContent() {
         </div>
       )}
       {isAdmin && (
-        <Link href="/manage-cars" className="text-white border px-4 py-2 mt-6 inline-block">
+        <Link 
+          href="/manage-cars" 
+          className="mt-6 inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        >
           管理車輛
         </Link>
       )}
