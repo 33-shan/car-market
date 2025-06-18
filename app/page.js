@@ -1,26 +1,35 @@
-'use client';
+'use client' // 添加這行，因為使用了瀏覽器專用API
 
 import Image from "next/image";
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState } from "react";
 import Link from 'next/link';
 
 function ClientOnlyContent() {
   const [cars, setCars] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isNew, setIsNew] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // 添加加載狀態
 
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
-    if (token === "my-secret-token") {
-      setIsAdmin(true);
+    // 確保在客戶端執行
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("adminToken");
+      if (token === "my-secret-token") {
+        setIsAdmin(true);
+      }
+
+      const search = new URLSearchParams(window.location.search);
+      setIsNew(search.get("new") === "1");
+
+      const storedCars = JSON.parse(localStorage.getItem("cars") || "[]");
+      setCars(storedCars);
+      setIsLoading(false);
     }
-
-    const search = new URLSearchParams(window.location.search);
-    setIsNew(search.get("new") === "1");
-
-    const storedCars = JSON.parse(localStorage.getItem("cars") || "[]");
-    setCars(storedCars);
   }, []);
+
+  if (isLoading) {
+    return <p className="text-gray-500 mt-4">載入中...</p>;
+  }
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-8 flex flex-col items-center">
@@ -31,9 +40,11 @@ function ClientOnlyContent() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {cars.map((car, i) => (
             <Link key={i} href={`/car/${car.id}`} className="block bg-white p-6 rounded w-[380px] shadow-md hover:shadow-lg transition">
-              <img
+              <Image
                 src={car.imageBase64List?.[0] || "/no-image.png"}
                 alt="車輛圖片"
+                width={380}
+                height={256}
                 className="w-full h-64 object-cover rounded-md"
               />
               <p className="font-semibold">{car.brand} {car.model}（{car.year} 年）</p>
@@ -64,9 +75,7 @@ export default function Home() {
         height={100}
         priority
       />
-      <Suspense fallback={<p className="text-gray-500 mt-4">載入中...</p>}>
-        <ClientOnlyContent />
-      </Suspense>
+      <ClientOnlyContent />
     </div>
   );
 }
