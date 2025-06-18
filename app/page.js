@@ -2,12 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from 'next/link';
-import { Cactus_Classical_Serif } from 'next/font/google'
 
-const cactus = Cactus_Classical_Serif({
-  subsets: ['latin'],
-  weight: ['400'],
-});
 
 export default function Home() {
   const [cars, setCars] = useState([]);
